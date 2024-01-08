@@ -34,6 +34,7 @@
 }
 .task-row-wrapper {
   display: flex;
+  margin-bottom: 16px;
 }
 .task-list {
   margin: 0;
@@ -60,6 +61,9 @@ input,
   color: #3a3a3a;
 }
 /* Heading */
+.title {
+  display: none;
+}
 .heading {
   color: #333;
   font-weight: 700;
@@ -88,7 +92,7 @@ input,
 /* New Task */
 .add-item__heading {
   display: block;
-  margin: 0 0 20px;
+  margin: 17px 0 20px;
 }
 #new-task {
   width: 318px;
