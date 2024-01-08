@@ -8,14 +8,14 @@
 
 // Event handling, user interaction is what starts the code execution.
 
-var taskInput=document.getElementById("new-task");//Add a new task.
+var taskInput=document.querySelector(".add-item__text-input");//Add a new task.
 var addButton=document.getElementsByTagName("button")[0];//first button
-var incompleteTaskHolder=document.getElementById("incompleteTasks");//ul of #incompleteTasks
-var completedTasksHolder=document.getElementById("completed-tasks");//completed-tasks
+var incompleteTaskHolder=document.querySelector(".todo__task-list");//ul of #incomplete-tasks
+var completedTasksHolder=document.querySelector(".completed__task-list");//completed-tasks
 
 
 //New task list item
-var createNewTaskElement=function(taskString){
+var createNewTaskElement=function(taskString){  
 
     var listItem=document.createElement("li");
 
@@ -32,19 +32,25 @@ var createNewTaskElement=function(taskString){
     var deleteButton=document.createElement("button");//delete button
     var deleteButtonImg=document.createElement("img");//delete button image
 
+    listItem.className = 'list-item';
+
     label.innerText=taskString;
-    label.className='task';
+    label.className='list-item__task-name';
 
     //Each elements, needs appending
     checkBox.type="checkbox";
+    checkBox.className = 'list-item__checkbox';
+
     editInput.type="text";
-    editInput.className="task";
+    editInput.className="list-item__text-input text-input";
 
     editButton.innerText="Edit"; //innerText encodes special characters, HTML does not.
-    editButton.className="edit";
+    editButton.className="button button-edit";
 
-    deleteButton.className="delete";
+    deleteButton.className="button button-delete";
     deleteButtonImg.src='./remove.svg';
+    deleteButton.setAttribute('alt', "Button delete")
+    deleteButtonImg.className = 'delete-img';
     deleteButton.appendChild(deleteButtonImg);
 
 
@@ -84,8 +90,8 @@ var editTask=function(){
 
     var editInput=listItem.querySelector('input[type=text]');
     var label=listItem.querySelector("label");
-    var editBtn=listItem.querySelector(".edit");
-    var containsClass=listItem.classList.contains("editMode");
+    var editBtn=listItem.querySelector(".button-edit");
+    var containsClass=listItem.classList.contains("list-item_edit-mode");
     //If class of the parent is .editmode
     if(containsClass){
 
@@ -99,7 +105,9 @@ var editTask=function(){
     }
 
     //toggle .editmode on the parent.
-    listItem.classList.toggle("editMode");
+    listItem.classList.toggle('list-item_edit-mode');
+    listItem.querySelector('.text-input').classList.toggle('text-input_edit-mode');
+    listItem.querySelector('.list-item__task-name').classList.toggle('list-item__task-name_edit-mode');
 };
 
 
@@ -122,6 +130,7 @@ var taskCompleted=function(){
     //Append the task list item to the #completed-tasks
     var listItem=this.parentNode;
     completedTasksHolder.appendChild(listItem);
+    listItem.querySelector('.list-item__task-name').classList.add('completed__task-name');
     bindTaskEvents(listItem, taskIncomplete);
 
 }
@@ -131,9 +140,10 @@ var taskIncomplete=function(){
     console.log("Incomplete Task...");
 //Mark task as incomplete.
     //When the checkbox is unchecked
-    //Append the task list item to the #incompleteTasks.
+    //Append the task list item to the #incomplete-tasks.
     var listItem=this.parentNode;
     incompleteTaskHolder.appendChild(listItem);
+    listItem.querySelector('.list-item__task-name').classList.remove('completed__task-name');
     bindTaskEvents(listItem,taskCompleted);
 }
 
@@ -156,8 +166,8 @@ var bindTaskEvents=function(taskListItem,checkBoxEventHandler){
     console.log("bind list item events");
 //select ListItems children
     var checkBox=taskListItem.querySelector("input[type=checkbox]");
-    var editButton=taskListItem.querySelector("button.edit");
-    var deleteButton=taskListItem.querySelector("button.delete");
+    var editButton=taskListItem.querySelector(".button-edit");
+    var deleteButton=taskListItem.querySelector(".button-delete");
 
 
     //Bind editTask to edit button.
